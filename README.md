@@ -9,3 +9,10 @@ wiki 是一个用来整理团队关于产品或项目的设计、分析、沟通
 | 文本域支持markdown | 文本域支持使用markdown语法的内容，采用markdown插件 | 待开发 | 暂未安排 |  |
 | 增加搜索页面 | 搜索页面使用 all in one 的搜索框 | 待开发 | 暂未安排| |
 | 增加标签的功能 | 增加给内容标记标签的功能（手动标记） | 待开发 | 暂未安排 | |
+
+## Collaborators
+yankaijie
+cc
+wangcheng
+wurenshuang
+
