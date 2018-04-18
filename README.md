@@ -10,9 +10,38 @@ wiki 是一个用来整理团队关于产品或项目的设计、分析、沟通
 | 增加搜索页面 | 搜索页面使用 all in one 的搜索框 | 待开发 | 暂未安排| |
 | 增加标签的功能 | 增加给内容标记标签的功能（手动标记） | 待开发 | 暂未安排 | |
 
+## 数据结构
+wiki项目计划调用数据保存微服务的方式进行保存。与服务交互的数据结构如下：
+```
+request
+{
+	title : '',
+	content : '',
+	author : 'jim',
+	insertTime : '2018-04-18 20:00:00',
+	updateTime : '2018-04-18 20:00:00'
+}
+
+response
+{
+	success : true,
+	errorMsg : '',
+	id : '',
+	title : '',
+	content : '',
+	author : 'jim',
+	insertTime : '2018-04-18 20:00:00',
+	updateTime : '2018-04-18 20:00:00'
+}
+
+```
+
 ## 感谢
 [yankj12](https://github.com/yankj12)
+
 [cc](https://github.com/cc-lady)
+
 [Orange](https://github.com/43942692)
+
 [wurenshuang](https://github.com/wurenshuang1992)
 
