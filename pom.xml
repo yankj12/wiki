@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>wiki</name>
-	<description>cqp cowork project</description>
+	<description>cowork project</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -25,6 +25,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -57,7 +61,17 @@
   		    <artifactId>spring-boot-starter-thymeleaf</artifactId> 
 	    </dependency>	
 	</dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Camden.SR5</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
