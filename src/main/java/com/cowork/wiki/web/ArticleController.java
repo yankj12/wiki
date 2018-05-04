@@ -29,7 +29,7 @@ public class ArticleController {
 	@RequestMapping("/edit")
 	public ModelAndView inputItem() throws JsonProcessingException {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("inputItem");
+		mav.setViewName("wiki");
 		return mav;
 	}
 	
