@@ -10,6 +10,7 @@ public class ArticleVo implements Serializable{
 	private String title;
 	private String content;
 	private String author;
+	private String validStatus;
 	private Date insertTime;
 	private Date updateTime;
 	public String getId() {
@@ -48,6 +49,11 @@ public class ArticleVo implements Serializable{
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-	
+	public String getValidStatus() {
+		return validStatus;
+	}
+	public void setValidStatus(String validStatus) {
+		this.validStatus = validStatus;
+	}
 	
 }

@@ -83,8 +83,8 @@ Article
 
 |序号| API URL | 描述 | 交互数据示例 |
 |---|---|---|---|
-|1| /wiki/api/article/{id} |进入文章编辑页面，加载文章数据的api，RESTful风格 |示例暂无|
-|2| /wiki/api/article/{id} |新增或者修改文章，保存文章内容，RESTful风格|示例暂无|
+|1| /wiki/api/article/{id} |进入文章编辑页面，加载文章数据的api，RESTful风格GET |示例暂无|
+|2| /wiki/api/article/{id} |新增或者修改文章，保存文章内容，RESTful风格PUT，POST|示例暂无|
 |3|  |修改文章标题后，保存标题，RESTful风格 |示例暂无|
 |4|  |修改文章内容后，保存内容，RESTful风格 |示例暂无|
 |备注||考虑3和4是否可以使用更新文章整体的api|
