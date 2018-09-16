@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+ 
+    <context:annotation-config />
+    
+    <context:property-placeholder location="classpath:application.properties" />
+    
+    <context:component-scan base-package="com.yan"/>
+	<context:component-scan base-package="com.cowork"/>
+
+	<mvc:resources mapping="/jquery/**" location="/jquery/" />
+ 	<mvc:resources mapping="/font-awesome/**" location="/font-awesome/" />
+	<mvc:resources mapping="/simplemde/**" location="/simplemde/" />
+
+	<!-- 
+	配置了上面的 <mvc:resources mapping= 之后，必须要再配置下 <mvc:annotation-driven ，否则会报url在DispatcherServlet中找不到
+	WARNING: No mapping found for HTTP request with URI [/gant/demo/index] in DispatcherServlet with name 'springmvc'
+	 -->
+	<mvc:annotation-driven /> 
+
+    <!-- 配置视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <!-- WebRoot到一指定文件夹文件路径 --> 
+        <property name="prefix" value="/" />  
+        <!-- 视图名称后缀  --> 
+        <property name="suffix" value=".jsp" />  
+    </bean>  
+</beans>

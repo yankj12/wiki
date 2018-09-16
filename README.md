@@ -24,6 +24,7 @@ wiki 是一个用来整理团队关于产品或项目的设计、分析、沟通
 
 ## 数据结构
 wiki项目计划调用数据保存微服务的方式进行保存。与服务交互的数据结构如下：
+
 ```
 Article
 {
@@ -36,6 +37,7 @@ Article
 }
 
 ```
+
 ## 页面展示
 ### **页面设计**
 - 标题栏
@@ -97,4 +99,22 @@ Article
 [Orange](https://github.com/43942692)
 
 [wurenshuang](https://github.com/wurenshuang1992)
+
+## 常见问题
+
+```
+java.util.concurrent.ExecutionException: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[/wiki]]
+Caused by: java.lang.ClassNotFoundException: org.springframework.core.io.Resource
+
+```
+缺少spring核心包
+
+```
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-core</artifactId>
+    <version>4.3.0.RELEASE</version>
+</dependency>
+```
 
