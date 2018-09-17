@@ -30,8 +30,8 @@ function getUrlParam(name) {
 
 $(document).ready(function(){
 	//body onload后处理的事情
-	//从url中获取到文章的id
-	var articleId = getUrlParam('articleId');
+	//从隐藏域中获取到文章的id
+	var articleId = $("#id").val();
 	if(articleId == null || articleId == ''){
 		//如果文章id为空，表示是新增，进入页面应该是编辑模式
 		//1、标题后面的Edit按钮置为隐藏
@@ -47,7 +47,7 @@ $(document).ready(function(){
 		
 		$.ajax({
 	        type:"GET", 
-	        url: "/wiki/api/article/" + articleId,
+	        url: "/wiki/rest/article/" + articleId,
 	        //url:"leave/saveLeaveApplication?editType=新增",
 	        dataType:"json", 
 	        //data:postData,

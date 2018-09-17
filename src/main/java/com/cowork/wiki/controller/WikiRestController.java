@@ -1,18 +1,15 @@
 package com.cowork.wiki.controller;
 
-import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.cowork.wiki.dao.ArticleMongoDaoUtil;
 import com.cowork.wiki.model.Article;
@@ -21,13 +18,13 @@ import com.cowork.wiki.vo.ResponseVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yan.common.util.SchemaCopyUtil;
 
-@Controller
+@RestController
 public class WikiRestController {
 	
 	@Autowired
 	private ArticleMongoDaoUtil articleMongoDaoUtil;
 	
-	@RequestMapping(value = "/wiki/api/article/{id}",method = RequestMethod.GET,consumes="application/json")
+	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.GET,consumes="application/json")
 	public ResponseVo queryArticle(@PathVariable String id) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
@@ -45,7 +42,7 @@ public class WikiRestController {
 		return responseVo;
 	}
 	
-	@RequestMapping(value = "/wiki/api/article",method = RequestMethod.PUT, consumes="application/json")
+	@RequestMapping(value = "/rest/article",method = RequestMethod.PUT, consumes="application/json")
 	public ResponseVo addArticle(@RequestBody ArticleVo articleVo) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
@@ -71,7 +68,7 @@ public class WikiRestController {
 		return responseVo;
 	}
 	
-	@RequestMapping(value = "/wiki/api/article/{id}",method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.POST, consumes="application/json")
 	public ResponseVo updateArticle(@PathVariable String id, @RequestBody ArticleVo articleVo) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
@@ -90,7 +87,7 @@ public class WikiRestController {
 		return responseVo;
 	}
 	
-	@RequestMapping(value = "/wiki/api/article/{id}",method = RequestMethod.DELETE, consumes="application/json")
+	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.DELETE, consumes="application/json")
 	public ResponseVo deleteArticle(@PathVariable String id) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);

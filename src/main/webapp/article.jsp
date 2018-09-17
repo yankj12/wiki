@@ -28,6 +28,7 @@
 </head>
 <body>
 	<form id="fm" action="/article/input" onSubmit="return checkContent()">
+		<input type="hidden" id="id" name="id" value="${id }" />
 		<table width="100%">
 			<tr>
 				<td width="85%">
