@@ -1,20 +1,17 @@
 package com.cowork.wiki.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class WikiController {
 
-	
+	// web的根路径是/wiki，所以RequestMapping不要以/wiki开头，容易冲突
 	//显示输入页面 http://localhost:8012/content/viewInput
-	@RequestMapping("/wiki/article/new")
-	public void inputItem(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping("/article/new")
+	public String inputItem(){
 				
-		response.sendRedirect("article");
+		return "article";
 	}
 
 }

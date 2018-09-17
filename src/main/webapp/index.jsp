@@ -16,7 +16,7 @@
 </head>
 <body>
 index<br/>
-<a href="/wiki">new artical</a>
+<a href="/wiki/article/new">new artical</a>
 </body>
 
 </html>

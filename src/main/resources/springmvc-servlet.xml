@@ -19,9 +19,10 @@
     <context:component-scan base-package="com.yan"/>
 	<context:component-scan base-package="com.cowork"/>
 
-	<mvc:resources mapping="/jquery/**" location="/jquery/" />
+	<!-- 采用web.xml中处理静态资源的方式 -->
+	<!-- <mvc:resources mapping="/jquery/**" location="/jquery/" />
  	<mvc:resources mapping="/font-awesome/**" location="/font-awesome/" />
-	<mvc:resources mapping="/simplemde/**" location="/simplemde/" />
+	<mvc:resources mapping="/simplemde/**" location="/simplemde/" /> -->
 
 	<!-- 
 	配置了上面的 <mvc:resources mapping= 之后，必须要再配置下 <mvc:annotation-driven ，否则会报url在DispatcherServlet中找不到
@@ -35,5 +36,16 @@
         <property name="prefix" value="/" />  
         <!-- 视图名称后缀  --> 
         <property name="suffix" value=".jsp" />  
-    </bean>  
+    </bean>
+    
+    <!-- <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="mappings">
+         <props>
+            <prop key="/article/new">articleNewController</prop>
+         </props>
+      </property>
+   </bean>
+   <bean id="articleNewController" class="com.cowork.wiki.controller.ArticleNewController" />
+     -->
+    
 </beans>

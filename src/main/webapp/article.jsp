@@ -1,19 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8"></meta>
 <title>wiki</title>
 <!-- simplemde插件将autoDownloadFontAwesome置为false，样式从本地加载 begin -->
-<link rel="stylesheet" href="./font-awesome/4.7/css/font-awesome.min.css"/>
-<link rel="stylesheet" href="./font-awesome/4.7/fonts/fontawesome-webfont.woff2"/>
+<link rel="stylesheet" href="/wiki/font-awesome/4.7/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="/wiki/font-awesome/4.7/fonts/fontawesome-webfont.woff2"/>
 <!-- simplemde插件将autoDownloadFontAwesome置为false，样式从本地加载 end -->
 
 <!-- 引入simplemde插件 -->
-<link rel="stylesheet" href="./simplemde/dist/simplemde.min.css"/>
-<script src="./simplemde/dist/simplemde.min.js"></script>
+<link rel="stylesheet" href="/wiki/simplemde/dist/simplemde.min.css"/>
+<script src="/wiki/simplemde/dist/simplemde.min.js"></script>
 
 <!-- 引入jquery' -->
-<script src="./jquery/3.3.1/jquery.min.js"></script>
+<script src="/wiki/jquery/3.3.1/jquery.min.js"></script>
 
 
 <style>
@@ -58,6 +60,6 @@
 	</form>
 </body>
 <!-- 引入article.js -->
-<script src="./article.js"></script>
+<script src="/wiki/article.js"></script>
 
 </html>
