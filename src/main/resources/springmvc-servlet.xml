@@ -38,14 +38,4 @@
         <property name="suffix" value=".jsp" />  
     </bean>
     
-    <!-- <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-      <property name="mappings">
-         <props>
-            <prop key="/article/new">articleNewController</prop>
-         </props>
-      </property>
-   </bean>
-   <bean id="articleNewController" class="com.cowork.wiki.controller.ArticleNewController" />
-     -->
-    
 </beans>
