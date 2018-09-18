@@ -16,11 +16,11 @@ public class WikiController {
 		return "article";
 	}
 
-	@RequestMapping("/article/{id}")
-	public ModelAndView editArticle(@PathVariable String id){
+	@RequestMapping("/article/{articleId}")
+	public ModelAndView editArticle(@PathVariable Integer articleId){
 		ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("article");
-        modelAndView.addObject("id", id);
+        modelAndView.addObject("articleId", articleId);
         return modelAndView;
 	}
 	

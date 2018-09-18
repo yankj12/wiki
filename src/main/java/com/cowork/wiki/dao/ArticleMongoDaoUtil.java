@@ -17,6 +17,7 @@ import com.cowork.wiki.model.Article;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -35,6 +36,34 @@ public class ArticleMongoDaoUtil {
 
 	public void setDataSource(MongoDBConfig dataSource) {
 		this.dataSource = dataSource;
+	}
+	
+	public Integer findMaxArticleId() {
+		Integer maxArticleId = 0;
+		
+		//To connect to a single MongoDB instance:
+		//You can explicitly specify the hostname and the port:
+		MongoCredential credential = MongoCredential.createCredential(dataSource.getUser(), dataSource.getDbUserDefined(), dataSource.getPassword().toCharArray());
+		MongoClient mongoClient = new MongoClient(new ServerAddress(dataSource.getIp(), dataSource.getPort()),
+		                                         Arrays.asList(credential));
+		//Access a Database
+		MongoDatabase database = mongoClient.getDatabase(dataSource.getDatabase());
+		
+		//Access a Collection
+		MongoCollection<Document> collection = database.getCollection("Article");
+		
+		//计算articleId的最大值
+		AggregateIterable<Document> iterable = collection.aggregate(Arrays.asList(
+		            new Document("$group", new Document("_id", "max").append("max_value", new Document("$max", "$articleId")))
+		    ));
+		
+		if(iterable != null){
+			for(Document doc : iterable){
+				maxArticleId = doc.getInteger("max_value");
+			}
+		}
+		mongoClient.close();
+		return maxArticleId;
 	}
 	
 	public String insertArticle(Article article){
@@ -96,6 +125,8 @@ public class ArticleMongoDaoUtil {
 				if(value != null && !"".equals(value.toString().trim())){
 					if("id".equals(key)) {
 						bsons.add(Filters.eq("_id", new ObjectId(value.toString())));
+					}else if ("articleId".equals(key)) {
+						bsons.add(Filters.eq("articleId", value));
 					}else if ("insertTimeStart".equals(key)) {
 						bsons.add(Filters.gte("insertTime", value));
 					}else if ("insertTimeEnd".equals(key)) {
@@ -179,6 +210,8 @@ public class ArticleMongoDaoUtil {
 				if(value != null && !"".equals(value.toString().trim())){
 					if("id".equals(key)) {
 						bsons.add(Filters.eq("_id", new ObjectId(value.toString())));
+					}else if ("articleId".equals(key)) {
+						bsons.add(Filters.eq("articleId", value));
 					}else if ("insertTimeStart".equals(key)) {
 						bsons.add(Filters.gte("insertTime", value));
 					}else if ("insertTimeEnd".equals(key)) {
@@ -232,6 +265,30 @@ public class ArticleMongoDaoUtil {
 		 //Update a Document
 		 collection.updateOne(Filters.eq("_id", doc.get("_id")), new Document("$set", doc));
 		 mongoClient.close();
+	}
+	
+	public Article findArticleByArticleId(Integer articleId) {
+		Article article = null;
+		if(articleId != null) {
+			//To connect to a single MongoDB instance:
+			//You can explicitly specify the hostname and the port:
+			MongoCredential credential = MongoCredential.createCredential(dataSource.getUser(), dataSource.getDbUserDefined(), dataSource.getPassword().toCharArray());
+			MongoClient mongoClient = new MongoClient(new ServerAddress(dataSource.getIp(), dataSource.getPort()),
+			                                         Arrays.asList(credential));
+			//Access a Database
+			MongoDatabase database = mongoClient.getDatabase(dataSource.getDatabase());
+			
+			//Access a Collection
+			MongoCollection<Document> collection = database.getCollection("Article");
+			
+			List<Document> docs = collection.find(Filters.eq("articleId", articleId)).into(new ArrayList<Document>());
+			if(docs != null && docs.size() > 0) {
+				article = (Article)SchemaDocumentUtil.documentToSchame(docs.get(0), Article.class);
+			}
+			mongoClient.close();
+		}
+		
+		return article;
 	}
 	
 	public Article findArticleById(String id) {
@@ -288,4 +345,36 @@ public class ArticleMongoDaoUtil {
 			mongoClient.close();
 		}
 	}
+	
+	public void updateArticleMultiFieldsByArticleId(Integer articleId, Map<String, Object> map){
+		
+		if(map != null && map.size() > 0) {
+			//To connect to a single MongoDB instance:
+			//You can explicitly specify the hostname and the port:
+			MongoCredential credential = MongoCredential.createCredential(dataSource.getUser(), dataSource.getDbUserDefined(), dataSource.getPassword().toCharArray());
+			MongoClient mongoClient = new MongoClient(new ServerAddress(dataSource.getIp(), dataSource.getPort()),
+					Arrays.asList(credential));
+			//Access a Database
+			MongoDatabase database = mongoClient.getDatabase(dataSource.getDatabase());
+			
+			//Access a Collection
+			MongoCollection<Document> collection = database.getCollection("Article");
+			
+			//Create a Document
+			Document doc = new Document();
+			
+			for(Iterator<Entry<String, Object>> iterator = map.entrySet().iterator();iterator.hasNext();) {
+				Entry<String, Object> entry = iterator.next();
+				String key = entry.getKey();
+				Object value = entry.getValue();
+				
+				doc.append(key, value);
+			}
+			
+			//Update a Document
+			collection.updateOne(Filters.eq("articleId", articleId), new Document("$set", doc));
+			mongoClient.close();
+		}
+	}
+	
 }

@@ -31,7 +31,7 @@ function getUrlParam(name) {
 $(document).ready(function(){
 	//body onload后处理的事情
 	//从隐藏域中获取到文章的id
-	var articleId = $("#id").val();
+	var articleId = $("#articleId").val();
 	if(articleId == null || articleId == ''){
 		//如果文章id为空，表示是新增，进入页面应该是编辑模式
 		//1、标题后面的Edit按钮置为隐藏
@@ -79,5 +79,53 @@ $(document).ready(function(){
 });
 
 function saveArticle(){
+	var article = new Object();
 	
+	// 先获取下articleId
+	article.articleId = $("#articleId").val();
+	
+	//设置标题
+	article.title = $("#article_title_edit").val();
+	
+	//设置作者
+	article.author = $("#article_author_edit").val();
+	
+	//设置内容
+	article.content = simplemde.value();
+	
+	var ajaxType = '';
+	var url = ''
+	if(article.articleId == null || article.articleId == ''){
+		// 新增
+		ajaxType = "PUT";
+		url = "/wiki/rest/article";
+	}else{
+		// 修改
+		ajaxType = "POST";
+		url = "/wiki/rest/article/" + article.articleId;
+	}
+	
+	$.ajax({
+        type:ajaxType, 
+        url: url,
+        //url:"leave/saveLeaveApplication?editType=新增",
+        dataType:"json", 
+        data:JSON.stringify(article),
+        contentType: "application/json;charset=utf-8", 
+        success:function(result){
+        	if (result.success){
+        		var article = result.article;
+        		
+        		//设置articleId
+        		$("#articleId").val(article.articleId);
+				
+        	}else{
+        		alert('提示' + result.errorMsg);
+        	}
+        },
+       	failure:function (result) {  
+       		//(提示框标题，提示信息)
+    		alert('提示' + '加载失败');
+       	}
+	});
 }
