@@ -24,25 +24,31 @@ public class WikiRestController {
 	@Autowired
 	private ArticleMongoDaoUtil articleMongoDaoUtil;
 	
-	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.GET,consumes="application/json")
+	// ,consumes="application/json"
+	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.GET)
 	public ResponseVo queryArticle(@PathVariable String id) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
 		responseVo.setErrorMsg(null);
 		
 		if(id != null && !"".equals(id.trim())) {
-			//查询数据
-			Article article = articleMongoDaoUtil.findArticleById(id);
-			
-			ArticleVo articleVo = (ArticleVo) SchemaCopyUtil.simpleCopy(article, ArticleVo.class);
-			responseVo.setSuccess(true);
-			responseVo.setArticle(articleVo);
+			try {
+				//查询数据
+				Article article = articleMongoDaoUtil.findArticleById(id);
+				
+				ArticleVo articleVo = (ArticleVo) SchemaCopyUtil.simpleCopy(article, ArticleVo.class);
+				responseVo.setSuccess(true);
+				responseVo.setArticle(articleVo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				responseVo.setErrorMsg(e.getMessage());
+			}
 		}
 		
 		return responseVo;
 	}
 	
-	@RequestMapping(value = "/rest/article",method = RequestMethod.PUT, consumes="application/json")
+	@RequestMapping(value = "/rest/article",method = RequestMethod.PUT)
 	public ResponseVo addArticle(@RequestBody ArticleVo articleVo) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
@@ -56,19 +62,24 @@ public class WikiRestController {
 			articleVo.setUpdateTime(new Date());
 			
 			
-			Article article = (Article)SchemaCopyUtil.simpleCopy(articleVo, Article.class);
-			String id = articleMongoDaoUtil.insertArticle(article);
-			
-			articleVo.setId(id);
-			
-			responseVo.setSuccess(true);
-			responseVo.setArticle(articleVo);
+			try {
+				Article article = (Article)SchemaCopyUtil.simpleCopy(articleVo, Article.class);
+				String id = articleMongoDaoUtil.insertArticle(article);
+				
+				articleVo.setId(id);
+				
+				responseVo.setSuccess(true);
+				responseVo.setArticle(articleVo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				responseVo.setErrorMsg(e.getMessage());
+			}
 		}
 		
 		return responseVo;
 	}
 	
-	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.POST)
 	public ResponseVo updateArticle(@PathVariable String id, @RequestBody ArticleVo articleVo) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
@@ -77,17 +88,22 @@ public class WikiRestController {
 		if(articleVo != null && id != null && !"".equals(id.trim())) {
 			articleVo.setId(id);
 			
-			Article article = (Article)SchemaCopyUtil.simpleCopy(articleVo, Article.class);
-			articleMongoDaoUtil.updateArticle(article);
-			
-			responseVo.setSuccess(true);
-			responseVo.setArticle(articleVo);
+			try {
+				Article article = (Article)SchemaCopyUtil.simpleCopy(articleVo, Article.class);
+				articleMongoDaoUtil.updateArticle(article);
+				
+				responseVo.setSuccess(true);
+				responseVo.setArticle(articleVo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				responseVo.setErrorMsg(e.getMessage());
+			}
 		}
 		
 		return responseVo;
 	}
 	
-	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.DELETE, consumes="application/json")
+	@RequestMapping(value = "/rest/article/{id}",method = RequestMethod.DELETE)
 	public ResponseVo deleteArticle(@PathVariable String id) throws JsonProcessingException {
 		ResponseVo responseVo = new ResponseVo();
 		responseVo.setSuccess(false);
@@ -95,12 +111,17 @@ public class WikiRestController {
 		
 		if(id != null && !"".equals(id.trim())) {
 			
-			// 逻辑删除，将有效标志位置为无效
-			Map<String, Object> map = new HashMap<>();
-			map.put("validStatus", "0");
-			articleMongoDaoUtil.updateArticleMultiFieldsById(id, map);
-			
-			responseVo.setSuccess(true);
+			try {
+				// 逻辑删除，将有效标志位置为无效
+				Map<String, Object> map = new HashMap<>();
+				map.put("validStatus", "0");
+				articleMongoDaoUtil.updateArticleMultiFieldsById(id, map);
+				
+				responseVo.setSuccess(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				responseVo.setErrorMsg(e.getMessage());
+			}
 		}
 		
 		return responseVo;
