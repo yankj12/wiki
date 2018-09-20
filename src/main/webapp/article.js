@@ -13,6 +13,10 @@ var simplemde = new SimpleMDE({
 								});
 
 
+//var windowWidth = $(window).width();
+//var windowHeight = $(window).height();
+
+
 function checkContent(){
 	var content = simplemde.value();
 	//set value

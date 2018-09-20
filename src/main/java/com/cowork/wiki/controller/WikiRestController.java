@@ -1,7 +1,9 @@
 package com.cowork.wiki.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cowork.wiki.dao.ArticleMongoDaoUtil;
@@ -23,6 +26,53 @@ public class WikiRestController {
 	
 	@Autowired
 	private ArticleMongoDaoUtil articleMongoDaoUtil;
+	
+	@RequestMapping(value = "/rest/article",method = RequestMethod.GET)
+	public ResponseVo queryArticles(@RequestParam(required=false) String page, @RequestParam(required=false) String rows) throws JsonProcessingException {
+		ResponseVo responseVo = new ResponseVo();
+		responseVo.setSuccess(false);
+		responseVo.setErrorMsg(null);
+		
+		try {
+			Map<String, Object> condition = new HashMap<>();
+			
+			if(page == null || "".equals(page.trim())){
+				page = "1";
+			}
+			condition.put("page", page);
+			if(rows == null || "".equals(rows.trim())){
+				rows = "10";
+			}
+			condition.put("rows", rows);
+			
+			//有效状态
+			String validStatus = "1";
+			condition.put("validStatus", validStatus);
+			
+			
+			
+			Long total = articleMongoDaoUtil.countArticleDocumentsByCondition(condition);
+			List<Article> articles = articleMongoDaoUtil.findArticleDocumentsByCondition(condition);
+			
+			List<ArticleVo> articleVos = new ArrayList<>();
+			
+			if(articles != null) {
+				for(Article article:articles) {
+					ArticleVo articleVo = (ArticleVo) SchemaCopyUtil.simpleCopy(article, ArticleVo.class);
+					articleVos.add(articleVo);
+				}
+			}
+			responseVo.setSuccess(true);
+			
+			responseVo.setTotal(total.intValue());
+			responseVo.setArticles(articleVos);
+		} catch (Exception e) {
+			e.printStackTrace();
+			responseVo.setErrorMsg(e.getMessage());
+		}
+		
+		return responseVo;
+	}
 	
 	// ,consumes="application/json"
 	@RequestMapping(value = "/rest/article/{articleId}",method = RequestMethod.GET)

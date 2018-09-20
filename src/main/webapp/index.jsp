@@ -13,10 +13,21 @@
 		font-family: Tahoma, Verdana, Arial, sans-serif;
 	}
 </style>
+<!-- 引入jquery' -->
+<script src="${pageContext.request.contextPath}/jquery/3.3.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+  var contextRootPath = "${pageContext.request.contextPath}";
+</script>
+
 </head>
 <body>
-index<br/>
-<a href="/wiki/article/new">new artical</a>
+<a href="${pageContext.request.contextPath}/article/new">new artical</a><br/>
+
+<div id="dataGridDiv">
+</div>
 </body>
 
+<!-- 引入article.js -->
+<script src="${pageContext.request.contextPath}/index.js"></script>
 </html>
