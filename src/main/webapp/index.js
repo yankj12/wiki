@@ -1,6 +1,13 @@
 
 function init(){
-	var url = contextRootPath + "/rest/article?page=1&rows=10";
+	execQuery(1, 10);
+}
+
+function execQuery(pageNo, pageSize){
+	pageNo = parseInt(pageNo);
+	pageSize = parseInt(pageSize);
+	
+	var url = contextRootPath + "/rest/article?page=" + pageNo + "&rows=" + pageSize;
 	$.ajax({
         type:"GET", 
         url: url,
@@ -11,6 +18,14 @@ function init(){
         success:function(result){
         	if (result.success){
         		var articles = result.articles;
+        		var total = result.total;
+        		
+        		var totalPage = 0;
+        		if(total % pageSize == 0){
+        			totalPage = parseInt(total/pageSize);
+        		}else{
+        			totalPage = parseInt(total/pageSize) + 1;
+        		}
         		
         		var innerHtml = "";
         		
@@ -28,7 +43,46 @@ function init(){
         				// 删除操作应该使用js触发
         			}
         			innerHtml += "</tbody>";
-        			innerHtml += "<tfoot><tr><td align=\"center\" colspan=\"4\"><a>上一页</>&nbsp;|&nbsp;当前页&nbsp;1页&nbsp;,总计&nbsp;10页&nbsp;|&nbsp;<a>下一页</a></td></tr></tfoot>";
+        			
+        			// tfoot部分
+        			
+        			innerHtml += "<tfoot><tr><td align=\"center\" colspan=\"4\">";
+        			// <a href="javascript:javascript:void(0);" onclick="clickevent(this);">
+        			// 首页
+        			if(pageNo <= 1){
+        				innerHtml += "首页&nbsp;";
+        			}else{
+        				innerHtml += "<a href='javascript:javascript:execQuery(1," + pageSize + ");'>首页</a>&nbsp;";
+        			}
+        			
+        			// 上一页
+        			var prePageNo = parseInt(pageNo) - 1;
+        			if(prePageNo < 1){
+        				prePageNo = 1;
+        				innerHtml += "|&nbsp;上一页&nbsp;";
+        			}else{
+        				innerHtml += "|&nbsp;<a href='javascript:javascript:execQuery(" + prePageNo + "," + pageSize + ");'>上一页</a>&nbsp;";
+        			}
+        			
+        			// 当前页
+        			innerHtml += "|&nbsp;第" + pageNo + "页,&nbsp;总计&nbsp;" + totalPage + "页&nbsp;&nbsp;每页" + pageSize + "条,&nbsp;总计" + total + "条&nbsp;";
+        			// 下一页
+        			var nextPageNo = parseInt(pageNo) + 1;
+        			if(nextPageNo > totalPage){
+        				nextPageNo = totalPage;
+        				innerHtml += "|&nbsp;下一页&nbsp;";
+        			}else{
+        				innerHtml += "|&nbsp;<a href='javascript:javascript:execQuery(" + nextPageNo + "," + pageSize + ");'>下一页</a>&nbsp;";
+        			}
+        			
+        			// 末页
+        			if(pageNo >= totalPage){
+        				innerHtml += "末页&nbsp;";
+        			}else{
+        				innerHtml += "|&nbsp;<a href='javascript:javascript:execQuery(" + totalPage + "," + pageSize + ");'>末页</a>";
+        			}
+        			
+        			innerHtml += "</td></tr></tfoot>";
         			
         			innerHtml += "</table>";
         		}
@@ -46,7 +100,6 @@ function init(){
        	}
 	});
 }
-
 
 /**
  * 页面初始化后做些东西
