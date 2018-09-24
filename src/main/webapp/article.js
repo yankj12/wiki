@@ -21,7 +21,7 @@ function checkContent(){
 	var content = simplemde.value();
 	//set value
 	//simplemde.value("This text will appear in the editor");
-	alert(content);
+	//alert(content);
 	return true;
 }
 
@@ -101,35 +101,40 @@ function saveArticle(){
 	var url = ''
 	if(article.articleId == null || article.articleId == ''){
 		// 新增
-		ajaxType = "PUT";
-		url = "/wiki/rest/article";
+		//ajaxType = "PUT";
+		//url = "/wiki/rest/article";
+		
+		// 提交表单
+		$("#fm").submit();
+		
 	}else{
 		// 修改
 		ajaxType = "POST";
 		url = "/wiki/rest/article/" + article.articleId;
+		
+		$.ajax({
+			type:ajaxType, 
+			url: url,
+			//url:"leave/saveLeaveApplication?editType=新增",
+			dataType:"json", 
+			data:JSON.stringify(article),
+			contentType: "application/json;charset=utf-8", 
+			success:function(result){
+				if (result.success){
+					var article = result.article;
+					
+					//设置articleId
+					$("#articleId").val(article.articleId);
+					
+				}else{
+					alert('提示' + result.errorMsg);
+				}
+			},
+			failure:function (result) {  
+				//(提示框标题，提示信息)
+				alert('提示' + '加载失败');
+			}
+		});
 	}
 	
-	$.ajax({
-        type:ajaxType, 
-        url: url,
-        //url:"leave/saveLeaveApplication?editType=新增",
-        dataType:"json", 
-        data:JSON.stringify(article),
-        contentType: "application/json;charset=utf-8", 
-        success:function(result){
-        	if (result.success){
-        		var article = result.article;
-        		
-        		//设置articleId
-        		$("#articleId").val(article.articleId);
-				
-        	}else{
-        		alert('提示' + result.errorMsg);
-        	}
-        },
-       	failure:function (result) {  
-       		//(提示框标题，提示信息)
-    		alert('提示' + '加载失败');
-       	}
-	});
 }

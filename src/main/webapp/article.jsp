@@ -27,7 +27,7 @@
 </style>
 </head>
 <body>
-	<form id="fm" action="/article/input" onSubmit="return checkContent()">
+	<form id="fm" method="post" action="${pageContext.request.contextPath}/article/saveArticle" onSubmit="return checkContent()">
 		<input type="hidden" id="articleId" name="articleId" value="${articleId }" />
 		<table width="100%">
 			<tr>
