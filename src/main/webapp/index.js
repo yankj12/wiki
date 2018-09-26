@@ -39,7 +39,12 @@ function execQuery(pageNo, pageSize){
         			var i = 0;
         			for(i=0;i<articles.length;i++){
         				var article = articles[i];
-        				innerHtml += "<tr><td>" + article.articleId + "</td><td>" + article.title + "</td><td>" + article.author + "</td><td><a href=\"" + contextRootPath + "/article/" + article.articleId + "\">编辑</a></td></tr><br/>";
+        				innerHtml += "<tr><td>" + article.articleId + "</td><td>" + article.title + "</td><td>" + article.author + "</td>";
+        				// 编辑操作
+        				innerHtml += "<td><a href=\"" + contextRootPath + "/article/" + article.articleId + "\">编辑</a>";
+        				// 删除操作
+        				innerHtml += "&nbsp;&nbsp;<a href='javascript:javascript:deleteArticle(" + article.articleId + ");'>删除</a></td>";
+        				innerHtml += "</tr>";
         				// 删除操作应该使用js触发
         			}
         			innerHtml += "</tbody>";
@@ -99,6 +104,39 @@ function execQuery(pageNo, pageSize){
     		alert('提示' + '加载失败');
        	}
 	});
+}
+
+function deleteArticle(articleId){
+	// 先交互式提示是否删除
+	// 异步调用删除方法
+	// 删除成功后重新查询
+	
+	var r = confirm("确认要删除这条记录吗？");
+	if (r == true){
+		$.ajax({
+			type:"DELETE", 
+			url: contextRootPath + "/rest/article/" + articleId,
+			dataType:"json", 
+			data:{},
+			contentType: "application/json;charset=utf-8", 
+			success:function(result){
+				if (result.success){
+					// 重新加载数据
+					execQuery(1, 10);
+					// 提示删除成功
+					
+				}else{
+					alert('提示' + result.errorMsg);
+				}
+			},
+			failure:function (result) {  
+				//(提示框标题，提示信息)
+				alert('提示' + '删除失败');
+			}
+		});
+	}else{
+		
+	}
 }
 
 /**

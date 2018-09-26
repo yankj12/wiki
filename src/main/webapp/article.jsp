@@ -17,6 +17,10 @@
 <!-- 引入jquery' -->
 <script src="${pageContext.request.contextPath}/jquery/3.3.1/jquery.min.js"></script>
 
+<script type="text/javascript">
+  var contextRootPath = "${pageContext.request.contextPath}";
+</script>
+
 
 <style>
 	body {
