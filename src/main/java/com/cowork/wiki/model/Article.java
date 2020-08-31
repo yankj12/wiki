@@ -1,13 +1,15 @@
-package com.cowork.wiki.vo;
+package com.cowork.wiki.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class ArticleVo implements Serializable{
+public class Article implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private String id;
+	
 	private Integer articleId;
+	
 	private String title;
 	private String content;
 	private String author;
@@ -63,5 +65,6 @@ public class ArticleVo implements Serializable{
 	public void setValidStatus(String validStatus) {
 		this.validStatus = validStatus;
 	}
+	
 	
 }

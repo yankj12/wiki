@@ -24,6 +24,7 @@ wiki 是一个用来整理团队关于产品或项目的设计、分析、沟通
 
 ## 数据结构
 wiki项目计划调用数据保存微服务的方式进行保存。与服务交互的数据结构如下：
+
 ```
 Article
 {
@@ -36,6 +37,7 @@ Article
 }
 
 ```
+
 ## 页面展示
 ### **页面设计**
 - 标题栏
@@ -98,3 +100,108 @@ Article
 
 [wurenshuang](https://github.com/wurenshuang1992)
 
+## 常见问题
+
+```
+java.util.concurrent.ExecutionException: org.apache.catalina.LifecycleException: Failed to start component [StandardEngine[Catalina].StandardHost[localhost].StandardContext[/wiki]]
+Caused by: java.lang.ClassNotFoundException: org.springframework.core.io.Resource
+
+```
+缺少spring核心包
+
+```
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-core</artifactId>
+    <version>4.3.0.RELEASE</version>
+</dependency>
+```
+
+### No mapping found for HTTP request with URI [/wiki/article/new]
+#### 报错信息如下
+```
+九月 17, 2018 9:53:07 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/new] in DispatcherServlet with name 'springmvc'
+```
+页面显示404
+
+#### 原因
+项目的web根路径是`/wiki`
+control的 `@RequestMapping("/wiki/article/new")` 改为 `@RequestMapping("/article/new")`
+猜测是`@RequestMapping("/wiki/article/new")`中的`/wiki`与web根路径的`/wiki`冲突
+
+
+### 静态资源显示 No mapping found for HTTP request with URI
+#### 报错信息
+```
+
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/font-awesome/4.7/css/font-awesome.min.css] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/font-awesome/4.7/fonts/fontawesome-webfont.woff2] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/simplemde/dist/simplemde.min.css] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/article.js] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/jquery/3.3.1/jquery.min.js] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/simplemde/dist/simplemde.min.js] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/jquery/3.3.1/jquery.min.js] in DispatcherServlet with name 'springmvc'
+九月 17, 2018 10:26:46 上午 org.springframework.web.servlet.PageNotFound noHandlerFound
+警告: No mapping found for HTTP request with URI [/wiki/article/article.js] in DispatcherServlet with name 'springmvc'
+```
+
+```
+Unable to add the resource at [/WEB-INF/classes/org/springframework/beans/factory/xml/spring-tool-4.2.xsd] to the cache for web application [/wiki] because there was insufficient free space available after evicting expired cache entries - consider increasing the maximum size of the cache
+```
+解决办法
+```
+web.xml中启用tomcat默认servlet urlmapping
+
+
+     <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.css</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.xml</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.swf</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.zip</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.gif</url-pattern>
+	  </servlet-mapping>
+	 
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.jpg</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.png</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.js</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.woff2</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	    <servlet-name>default</servlet-name>
+	    <url-pattern>*.ttf</url-pattern>
+	  </servlet-mapping>
+
+```

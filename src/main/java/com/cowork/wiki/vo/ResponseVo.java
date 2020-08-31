@@ -11,7 +11,7 @@ public class ResponseVo implements Serializable{
 	
 	private ArticleVo article;
 	
-	private List<String> articleIds;
+	private List<ArticleVo> articles;
 	
 	private int total;
 	
@@ -43,12 +43,12 @@ public class ResponseVo implements Serializable{
 		this.article = article;
 	}
 
-	public List<String> getArticleIds() {
-		return articleIds;
+	public List<ArticleVo> getArticles() {
+		return articles;
 	}
 
-	public void setArticleIds(List<String> articleIds) {
-		this.articleIds = articleIds;
+	public void setArticles(List<ArticleVo> articles) {
+		this.articles = articles;
 	}
 
 	public int getTotal() {
