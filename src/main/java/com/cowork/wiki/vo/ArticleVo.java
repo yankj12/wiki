@@ -7,6 +7,7 @@ public class ArticleVo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private String id;
+	private Integer articleId;
 	private String title;
 	private String content;
 	private String author;
@@ -18,6 +19,13 @@ public class ArticleVo implements Serializable{
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public Integer getArticleId() {
+		return articleId;
+	}
+	public void setArticleId(Integer articleId) {
+		this.articleId = articleId;
 	}
 	public String getTitle() {
 		return title;
