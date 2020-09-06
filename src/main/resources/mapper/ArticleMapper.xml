@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 指定dao -->
+<mapper namespace="com.cowork.wiki.mapper.ArticleMapper">
+
+	<insert id="insertArticle" parameterType="com.cowork.wiki.model.Article">
+    	insert into image_main 
+    	(uuid, suffix, md5, location, url, validStatus, insertTime, updateTime) 
+    	values 
+    	(#{uuid}, #{suffix}, #{md5}, #{location}, #{url}, #{validStatus}, #{insertTime}, #{updateTime})
+    </insert>
+    
+    <select id="findArticleById" parameterType="String" resultType="com.cowork.wiki.model.Article">
+        SELECT * FROM image_main WHERE uuid = #{uuid}
+    </select>
+    
+	<select id="countArticlesByCondition" parameterType="String" resultType="long">
+        SELECT count(*) FROM image_main
+        <trim prefix="where" prefixOverrides="and|or"> 
+    		<if test="uuid != null and uuid != ''">
+    			uuid=#{uuid}
+    		</if>
+    		<if test="md5 != null and md5 != ''">
+    			and md5=#{md5}
+    		</if>
+    		<if test="suffix != null and suffix != ''">
+    			and suffix=#{suffix}
+    		</if>
+    		<if test="validStatus != null and validStatus != ''">
+    			and validStatus = #{validStatus}
+    		</if>
+    		
+    	</trim>
+    </select>
+    
+    <select id="findArticlesByCondition" parameterType="java.util.Map"  resultType="com.cowork.wiki.model.Article">
+    	select * from image_main
+    	<trim prefix="where" prefixOverrides="and|or"> 
+    		<if test="uuid != null and uuid != ''">
+    			uuid=#{uuid}
+    		</if>
+    		<if test="md5 != null and md5 != ''">
+    			and md5=#{md5}
+    		</if>
+    		<if test="suffix != null and suffix != ''">
+    			and suffix=#{suffix}
+    		</if>
+    		<if test="validStatus != null and validStatus != ''">
+    			and validStatus = #{validStatus}
+    		</if>
+    		
+    	</trim>
+    	order by updateTime desc
+    	limit #{offset},#{pageSize}
+    </select>
+    
+    <update id="updateArticle" parameterType="com.cowork.wiki.model.Article">
+    	update image_main set validStatus=#{validStatus}, updateTime=#{updateTime}
+    	where uuid=#{uuid}
+    </update>
+    
+    <update id="updateArticleFieldsById" parameterType="com.cowork.wiki.model.Article">
+    	update image_main set validStatus=#{validStatus}, updateTime=#{updateTime}
+    	where uuid=#{uuid}
+    </update>
+</mapper>
