@@ -26,76 +26,93 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-core</artifactId>
-		    <version>4.2.9.RELEASE</version>
-		</dependency>
-	    <dependency>
-	      <groupId>org.springframework</groupId>
-	      <artifactId>spring-web</artifactId>
-	      <version>4.2.9.RELEASE</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.springframework</groupId>
-	      <artifactId>spring-webmvc</artifactId>
-	      <version>4.2.9.RELEASE</version>
-	    </dependency>
-		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
 		    <artifactId>jackson-databind</artifactId>
-		    <version>2.9.5</version>
+		</dependency>
+		<!-- 实现web功能依赖 --> 
+		<dependency> 
+			<groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-web</artifactId> 
+		</dependency>
+		<!-- 日志打印的依赖 -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
 		<dependency>
-		        <groupId>org.mongodb</groupId>
-	        <artifactId>mongodb-driver</artifactId>
-	        <version>3.5.0</version>
-	    </dependency>
-		<dependency>
-		    <groupId>org.mongodb</groupId>
-		    <artifactId>mongo-java-driver</artifactId>
-		    <version>3.5.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
-		
-		<!-- tomcat ��֧��.-->
-        <dependency>
-           <groupId>org.springframework.boot</groupId>
-           <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>
-        <dependency>
-           <groupId>org.apache.tomcat.embed</groupId>
-           <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
-        <!-- servlet ����. -->
-        <dependency>
-           <groupId>javax.servlet</groupId>
-           <artifactId>javax.servlet-api</artifactId>
-        </dependency>
+		<!--  使用Thymeleaf视图构建MVC Web应用程序的入门者 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter-thymeleaf</artifactId> 
+		</dependency>
+		<dependency>
+	    	<groupId>net.sourceforge.nekohtml</groupId>
+	    	<artifactId>nekohtml</artifactId>
+		</dependency>
 		<dependency>
 		    <groupId>org.mybatis.spring.boot</groupId>
 		    <artifactId>mybatis-spring-boot-starter</artifactId>
 		    <version>1.3.2</version>
 		</dependency>
-        <!-- pg ���� -->
+        <!-- pg -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-		<!--  ʹ��Thymeleaf��ͼ����MVC WebӦ�ó���������� -->
-        <dependency> 
-  		    <groupId>org.springframework.boot</groupId> 
-  		    <artifactId>spring-boot-starter-thymeleaf</artifactId> 
-	    </dependency>
 	    <!-- lombok -->
 	    <dependency>
 	        <groupId>org.projectlombok</groupId>
 	        <artifactId>lombok</artifactId>
-	        <version>1.16.10</version>
 	    </dependency>
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
 
+  	<!-- spring boot的maven插件：可执行jar/war包支持 -->
+ 	<build>
+ 		<finalName>${project.artifactId}-${project.version}</finalName> 
+		<plugins>
+			<!-- 编译级别 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+		
+			<!-- 支持maven war/jar打包 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork><!--项目每次修改后重启，如果没有该配置，devtools不会生效，因为应用不会重启-->
+					<includeSystemScope>true</includeSystemScope>
+			    </configuration> 
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<!--程序入口-->
+							<mainClass>com.yan.weather.WeatherApplication</mainClass>
+							<!-- <addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix> -->
+						</manifest>
+						<manifestEntries>
+							<Class-Path>./</Class-Path>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
+
+

@@ -10,7 +10,7 @@ import com.cowork.wiki.model.Article;
 @Mapper
 public interface ArticleMapper {
 	
-	public String insertArticle(Article article);
+	public Integer insertArticle(Article article);
 
 	public List<Article> findArticlesByCondition(Map<String, Object> condition);
 	
@@ -20,5 +20,5 @@ public interface ArticleMapper {
 	
 	public Article findArticleById(Integer id);
 	
-	public void updateArticleFieldsById(Integer id, Map<String, Object> map);
+	public void updateArticleFieldsById(Map<String, Object> map);
 }

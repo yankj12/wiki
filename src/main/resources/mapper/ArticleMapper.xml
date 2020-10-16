@@ -4,27 +4,24 @@
 <mapper namespace="com.cowork.wiki.mapper.ArticleMapper">
 
 	<insert id="insertArticle" parameterType="com.cowork.wiki.model.Article">
-    	insert into image_main 
-    	(uuid, suffix, md5, location, url, validStatus, insertTime, updateTime) 
+    	insert into t_article 
+    	(title, content, author, validStatus, insertTime, updateTime) 
     	values 
-    	(#{uuid}, #{suffix}, #{md5}, #{location}, #{url}, #{validStatus}, #{insertTime}, #{updateTime})
+    	(#{title}, #{content}, #{author}, #{validStatus}, #{insertTime}, #{updateTime})
     </insert>
     
     <select id="findArticleById" parameterType="String" resultType="com.cowork.wiki.model.Article">
-        SELECT * FROM image_main WHERE uuid = #{uuid}
+        SELECT * FROM t_article WHERE id = #{id}
     </select>
     
 	<select id="countArticlesByCondition" parameterType="String" resultType="long">
         SELECT count(*) FROM image_main
         <trim prefix="where" prefixOverrides="and|or"> 
-    		<if test="uuid != null and uuid != ''">
-    			uuid=#{uuid}
+    		<if test="title != null and title != ''">
+    			title like #{title}
     		</if>
-    		<if test="md5 != null and md5 != ''">
-    			and md5=#{md5}
-    		</if>
-    		<if test="suffix != null and suffix != ''">
-    			and suffix=#{suffix}
+    		<if test="author != null and author != ''">
+    			and author like #{author}
     		</if>
     		<if test="validStatus != null and validStatus != ''">
     			and validStatus = #{validStatus}
@@ -34,16 +31,13 @@
     </select>
     
     <select id="findArticlesByCondition" parameterType="java.util.Map"  resultType="com.cowork.wiki.model.Article">
-    	select * from image_main
+    	select * from t_article
     	<trim prefix="where" prefixOverrides="and|or"> 
-    		<if test="uuid != null and uuid != ''">
-    			uuid=#{uuid}
+    		<if test="title != null and title != ''">
+    			title like #{title}
     		</if>
-    		<if test="md5 != null and md5 != ''">
-    			and md5=#{md5}
-    		</if>
-    		<if test="suffix != null and suffix != ''">
-    			and suffix=#{suffix}
+    		<if test="author != null and author != ''">
+    			and author like #{author}
     		</if>
     		<if test="validStatus != null and validStatus != ''">
     			and validStatus = #{validStatus}
@@ -51,16 +45,25 @@
     		
     	</trim>
     	order by updateTime desc
-    	limit #{offset},#{pageSize}
+    	limit #{pageSize} OFFSET #{offset}
     </select>
     
     <update id="updateArticle" parameterType="com.cowork.wiki.model.Article">
-    	update image_main set validStatus=#{validStatus}, updateTime=#{updateTime}
-    	where uuid=#{uuid}
+    	update t_article set title=#{title}, content=#{content}, author=#{author}, validStatus=#{validStatus}, updateTime=#{updateTime}
+    	where id=#{id}
     </update>
     
-    <update id="updateArticleFieldsById" parameterType="com.cowork.wiki.model.Article">
-    	update image_main set validStatus=#{validStatus}, updateTime=#{updateTime}
-    	where uuid=#{uuid}
+    <update id="updateArticleFieldsById" parameterType="java.util.Map">
+    	update t_article set updateTime=#{updateTime}
+    	    <if test="title != null and title != ''">
+    			, title=#{title}
+    		</if>
+    		<if test="author != null and author != ''">
+    			, author=#{author}
+    		</if>
+    		<if test="validStatus != null and validStatus != ''">
+    			, validStatus=#{validStatus}
+    		</if>
+    	where id=#{id}
     </update>
 </mapper>

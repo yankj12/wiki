@@ -38,7 +38,7 @@ public class ArticleRestController {
 		
 		if(articalVo != null) {
 			Article article = (Article)SchameCopyUtil.simpleCopy(articalVo, Article.class);
-			if(articalVo.getId() != null && !"".equals(articalVo.getId().trim())) {
+			if(articalVo.getId() != null) {
 				// 避免将insertTime字段进行更新
 				article.setInsertTime(null);
 				article.setUpdateTime(new Date());
@@ -46,7 +46,7 @@ public class ArticleRestController {
 			}else {
 				article.setInsertTime(new Date());
 				article.setUpdateTime(new Date());
-				String id = articleMapper.insertArticle(article);
+				Integer id = articleMapper.insertArticle(article);
 				articalVo.setId(id);
 			}
 			responseVo.setSuccess(true);
@@ -85,10 +85,11 @@ public class ArticleRestController {
 		
 		if(id != null) {
 			Map<String, Object> map = new HashMap<>();
+			map.put("id", id);
 			map.put("validStatus", "0");
 			map.put("updateTime", new Date());
 			
-			articleMapper.updateArticleFieldsById(id, map);
+			articleMapper.updateArticleFieldsById(map);
 			responseVo.setSuccess(true);
 		}
 		
